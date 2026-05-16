@@ -243,7 +243,7 @@ demo = gr.Interface(
         label="Enhanced AI Output"
     ),
 
-    title="✨ AI Background Studio",
+    title="✨ AI Background Remover",
 
     description="""
 Professional AI background remover with enhanced HD quality.
