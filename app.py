@@ -13,16 +13,60 @@ from PIL import (
 session = new_session("isnet-general-use")
 
 # =========================
+# CUSTOM DARK CSS
+# =========================
+custom_css = """
+
+body {
+    background: #000000 !important;
+}
+
+.gradio-container {
+    background: #000000 !important;
+    color: white !important;
+}
+
+footer {
+    display: none !important;
+}
+
+.dark {
+    background: #000000 !important;
+}
+
+input, textarea, select {
+    background: #1a1a1a !important;
+    color: white !important;
+    border: 1px solid #333 !important;
+}
+
+button {
+    background: #ff6600 !important;
+    color: white !important;
+    border: none !important;
+}
+
+button:hover {
+    background: #ff7b1a !important;
+}
+
+.block {
+    background: #111111 !important;
+    border: 1px solid #333 !important;
+    border-radius: 14px !important;
+}
+
+"""
+
+# =========================
 # COLOR BACKGROUND CREATOR
 # =========================
 def create_background(bg_type, size):
 
     colors = {
 
-        # TRANSPARENT
         "No Background": None,
 
-        # WHITE / GREY / BLACK
         "White": (255, 255, 255, 255),
         "Off White": (245, 245, 245, 255),
         "Cream": (255, 253, 208, 255),
@@ -34,38 +78,24 @@ def create_background(bg_type, size):
         "Black": (0, 0, 0, 255),
         "Matte Black": (20, 20, 20, 255),
 
-        # RED
         "Light Red": (255, 102, 102, 255),
         "Red": (255, 0, 0, 255),
-        "Dark Red": (139, 0, 0, 255),
 
-        # PINK
         "Light Pink": (255, 182, 193, 255),
         "Pink": (255, 105, 180, 255),
-        "Dark Pink": (199, 21, 133, 255),
 
-        # BLUE
         "Sky Blue": (135, 206, 235, 255),
-        "Light Blue": (173, 216, 230, 255),
         "Blue": (0, 102, 255, 255),
-        "Dark Blue": (0, 0, 139, 255),
 
-        # GREEN
         "Mint Green": (152, 255, 152, 255),
-        "Light Green": (144, 238, 144, 255),
         "Green": (0, 200, 0, 255),
-        "Dark Green": (0, 100, 0, 255),
 
-        # YELLOW / ORANGE
         "Yellow": (255, 255, 0, 255),
-        "Golden Yellow": (255, 215, 0, 255),
         "Orange": (255, 165, 0, 255),
 
-        # PURPLE
         "Lavender": (230, 230, 250, 255),
         "Purple": (128, 0, 128, 255),
 
-        # SPECIAL
         "Beige": (245, 245, 220, 255),
         "Peach": (255, 218, 185, 255),
         "Coral": (255, 127, 80, 255),
@@ -118,26 +148,26 @@ def enhance_image(image):
 # =========================
 def process_image(image, bg_type):
 
-    # Remove background
+    # Remove Background
     output = remove(
         image,
         session=session
     )
 
-    # Enhance quality
+    # Enhance Quality
     output = enhance_image(output)
 
-    # Transparent output
+    # Transparent Output
     if bg_type == "No Background":
         return output
 
-    # Create background
+    # Create Background
     bg = create_background(
         bg_type,
         output.size
     )
 
-    # Paste subject
+    # Paste Subject
     bg.paste(
         output,
         (0, 0),
@@ -147,21 +177,9 @@ def process_image(image, bg_type):
     return bg
 
 # =========================
-# DARK THEME
-# =========================
-dark_theme = gr.themes.Base(
-
-    primary_hue="orange",
-    neutral_hue="zinc"
-
-)
-
-# =========================
 # UI
 # =========================
 demo = gr.Interface(
-
-    theme=dark_theme,
 
     fn=process_image,
 
@@ -191,24 +209,17 @@ demo = gr.Interface(
 
                 "Light Red",
                 "Red",
-                "Dark Red",
 
                 "Light Pink",
                 "Pink",
-                "Dark Pink",
 
                 "Sky Blue",
-                "Light Blue",
                 "Blue",
-                "Dark Blue",
 
                 "Mint Green",
-                "Light Green",
                 "Green",
-                "Dark Green",
 
                 "Yellow",
-                "Golden Yellow",
                 "Orange",
 
                 "Lavender",
@@ -243,7 +254,9 @@ Create stunning transparent edits instantly.
 
     clear_btn="🗑 Clear",
 
-    flagging_mode="never"
+    flagging_mode="never",
+
+    css=custom_css
 )
 
 # =========================
